@@ -1,0 +1,14 @@
+server:
+  mode: debug
+  httpPort: 8080
+
+# 数据库配置
+db:
+  db: mysql
+  host: localhost
+  port: 33060
+  name: myblog
+  user: root
+  password:
+
+

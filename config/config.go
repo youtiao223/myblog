@@ -11,6 +11,7 @@ type serverConfig struct {
 }
 
 type dbConfig struct {
+	Db       string
 	Host     string
 	Port     string
 	Name     string

@@ -1,0 +1,47 @@
+package v1
+
+import (
+	"github.com/gin-gonic/gin"
+	"myBlog/model"
+	"myBlog/utils/errors"
+	"net/http"
+	"strconv"
+)
+
+// AddUser 添加用户
+func AddUser(c *gin.Context) {
+	var user model.User
+	// 将请求体绑定到结构体中
+	_ = c.ShouldBindJSON(&user)
+
+	// model层返回错误码
+	code := model.InsertUser(&user)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errors.GetErrorMsg(code),
+	})
+}
+
+// DelUser 删除用户
+func DelUser(c *gin.Context) {
+	var user model.User
+	_ = c.ShouldBind(&user)
+	code := model.DelUser(&user)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"message": errors.GetErrorMsg(code),
+	})
+}
+
+// GetUsers 分页查询所有用户
+func GetUsers(c *gin.Context) {
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
+	users := model.SelectUsers(pageNum, pageSize)
+	code := errors.SUCCESS
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    users,
+		"message": errors.GetErrorMsg(code),
+	})
+}

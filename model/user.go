@@ -31,7 +31,9 @@ func SelectUsers(pageNum int, pageSize int) []User {
 	return users
 }
 
+<<<<<<< HEAD
 // InsertUser 插入用户 //todo 密码加密
+>>>>>>> origin/main
 func InsertUser(user *User) int {
 	// 检查用户名是否存在
 	isExit := SelectUserByName(user)

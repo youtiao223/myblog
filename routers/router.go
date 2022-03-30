@@ -17,9 +17,8 @@ func Init() {
 		// User 模块路由接口
 		routerV1.POST("user/add", v1.AddUser)
 		routerV1.GET("user/getUsers", v1.GetUsers)
-		//todo 删除用户,暂时不支持
-		//routerV1.POST("user/del", v1.DelUser)
-
+		routerV1.DELETE("user/del", v1.DelUser)
+		routerV1.PUT("user/edit", v1.EditUser)
 		//
 	}
 

@@ -34,7 +34,7 @@ func SelectUsers(pageNum int, pageSize int) []User {
 	return users
 }
 
-// InsertUser 插入用户 //todo 密码加密
+// InsertUser 插入用户
 func InsertUser(user *User) int {
 	// 检查用户名是否存在
 	isExit := SelectUserByName(user)
@@ -49,18 +49,41 @@ func InsertUser(user *User) int {
 	return errors.SUCCESS
 }
 
-// DelUser 删除用户
-func DelUser(user *User) int {
-	// 检查用户名是否存在
-	isExit := SelectUserByName(user)
+// DelUserById DelUser 删除用户
+func DelUserById(id uint) int {
+	rowsAffected := db.Delete(&User{}, id).RowsAffected
+	if rowsAffected == 0 {
+		return errors.ErrorUserIdNotExits
+	}
+	return errors.SUCCESS
+}
+
+// UpdateUserById UpdateUser 更新用户信息
+// 修改用户名要检查用户名是否重名
+// 密码修改独立，不在这里修改
+func UpdateUserById(id uint, data *User) int {
+	isExit := SelectUserByName(data)
 	if isExit {
 		return errors.ErrorUserExits
 	}
-	err := db.Delete(&user).Error
+	var newUser = make(map[string]interface{})
+	newUser["username"] = data.Username
+	newUser["role"] = data.Role
+	err := db.Model(&User{}).Where("id=?", id).Updates(newUser).Error
 	if err != nil {
 		return errors.ERROR
 	}
 	return errors.SUCCESS
+}
+
+// GetUserByNamePwd 根据用户名和密码查询用户
+func GetUserByNamePwd() {
+
+}
+
+// GetUserInfo 获取登录用户信息 todo
+func GetUserInfo() {
+
 }
 
 // Encrypt md5加盐加密
@@ -82,14 +105,4 @@ func Encrypt(data string) string {
 
 	last := fmt.Sprintf("%x", h.Sum(nil))
 	return last
-}
-
-// GetUserByNamePwd 根据用户名和密码查询用户
-func GetUserByNamePwd() {
-
-}
-
-// GetUserInfo 获取登录用户信息 todo
-func GetUserInfo() {
-
 }

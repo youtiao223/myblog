@@ -26,7 +26,7 @@ func AddUser(c *gin.Context) {
 func DelUser(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
-	code := model.DelUser(&user)
+	code := model.DelUserById(user.ID)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errors.GetErrorMsg(code),
@@ -42,6 +42,18 @@ func GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    users,
+		"message": errors.GetErrorMsg(code),
+	})
+}
+
+// EditUser 编辑用户
+func EditUser(c *gin.Context) {
+	var user model.User
+	_ = c.ShouldBind(&user)
+	code := model.UpdateUserById(user.ID, &user)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    user,
 		"message": errors.GetErrorMsg(code),
 	})
 }

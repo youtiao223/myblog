@@ -19,9 +19,10 @@ type User struct {
 // SelectUserByName 根据用户名查询用户
 // true : 用户存在
 // false : 用户不存在
-func SelectUserByName(user *User) bool {
-	rowsAffected := db.First(&user, "username = ?", user.Username).RowsAffected
-	if rowsAffected >= 1 {
+func SelectUserByName(username string) bool {
+	var user User
+	db.Select("id").Where("username = ?", username).First(&user)
+	if user.ID > 0 {
 		return true
 	}
 	return false
@@ -37,7 +38,7 @@ func SelectUsers(pageNum int, pageSize int) []User {
 // InsertUser 插入用户
 func InsertUser(user *User) int {
 	// 检查用户名是否存在
-	isExit := SelectUserByName(user)
+	isExit := SelectUserByName(user.Username)
 	if isExit {
 		return errors.ErrorUserExits
 	}
@@ -62,7 +63,7 @@ func DelUserById(id uint) int {
 // 修改用户名要检查用户名是否重名
 // 密码修改独立，不在这里修改
 func UpdateUserById(id uint, data *User) int {
-	isExit := SelectUserByName(data)
+	isExit := SelectUserByName(data.Username)
 	if isExit {
 		return errors.ErrorUserExits
 	}

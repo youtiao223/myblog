@@ -1,7 +1,10 @@
 package model
 
 import (
+	"crypto/md5"
+	"fmt"
 	"gorm.io/gorm"
+	"io"
 	"myBlog/utils/errors"
 )
 
@@ -38,6 +41,7 @@ func InsertUser(user *User) int {
 	if isExit {
 		return errors.ErrorUserExits
 	}
+	user.Password = Encrypt(user.Password)
 	err := db.Create(&user).Error
 	if err != nil {
 		return errors.ERROR
@@ -57,6 +61,27 @@ func DelUser(user *User) int {
 		return errors.ERROR
 	}
 	return errors.SUCCESS
+}
+
+// Encrypt md5加盐加密
+func Encrypt(data string) string {
+	h := md5.New()
+	_, _ = io.WriteString(h, data)
+
+	pwmd5 := fmt.Sprintf("%x", h.Sum(nil))
+
+	// 指定两个salt
+	salt1 := "&*o5"
+	salt2 := "^&*()"
+
+	// salt1+用户名+salt2+MD5拼接
+	_, _ = io.WriteString(h, salt1)
+	_, _ = io.WriteString(h, "abc")
+	_, _ = io.WriteString(h, salt2)
+	_, _ = io.WriteString(h, pwmd5)
+
+	last := fmt.Sprintf("%x", h.Sum(nil))
+	return last
 }
 
 // GetUserByNamePwd 根据用户名和密码查询用户

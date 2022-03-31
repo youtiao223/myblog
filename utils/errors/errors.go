@@ -11,28 +11,33 @@ const (
 	ErrorUserExits      = 4000
 	ErrorNameOrPwd      = 4001
 	ErrorUserIdNotExits = 4002
-)
 
-// 分类模块错误
-const (
 	ErrorCateExits      = 4100
 	ErrorCateIdNotExits = 4101
-)
 
-// 文章模块错误
-const (
 	ErrorArtIdNotExits = 4200
+
+	ErrorTokenExits  = 4300
+	ErrorTokenTime   = 4301
+	ErrorTokenFormat = 4302
 )
 
 var codeMsg = map[int]string{
-	SUCCESS:             "OK",
-	ERROR:               "FAIL",
+	SUCCESS: "OK",
+	ERROR:   "FAIL",
+
 	ErrorUserExits:      "用户名已存在",
 	ErrorUserIdNotExits: "用户不存在",
 	ErrorNameOrPwd:      "用户名或密码错误",
+
 	ErrorCateExits:      "分类名已存在",
 	ErrorCateIdNotExits: "分类不存在",
-	ErrorArtIdNotExits:  "文章不存在",
+
+	ErrorArtIdNotExits: "文章不存在",
+
+	ErrorTokenExits:  "Token 不存在",
+	ErrorTokenTime:   "Token 已过期",
+	ErrorTokenFormat: "Token 格式错误",
 }
 
 func GetErrorMsg(code int) string {

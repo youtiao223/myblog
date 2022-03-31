@@ -82,11 +82,6 @@ func GetUserByNamePwd() {
 
 }
 
-// GetUserInfo 获取登录用户信息 todo
-func GetUserInfo() {
-
-}
-
 // Encrypt md5加盐加密
 func Encrypt(data string) string {
 	h := md5.New()

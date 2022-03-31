@@ -1,7 +1,7 @@
 server:
   mode: debug
   httpPort: 8080
-
+  jwtKey: smo3(*kkc
 # 数据库配置
 db:
   db: mysql

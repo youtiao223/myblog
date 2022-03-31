@@ -8,6 +8,7 @@ import (
 type serverConfig struct {
 	Mode     string
 	HttpPort string
+	JwtKey   string
 }
 
 type dbConfig struct {

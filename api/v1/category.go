@@ -26,7 +26,7 @@ func AddCate(c *gin.Context) {
 func DelCate(c *gin.Context) {
 	var cate model.Category
 	_ = c.ShouldBind(&cate)
-	code := model.DelCateById(cate.Id)
+	code := model.DelCateById(cate.ID)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errors.GetErrorMsg(code),
@@ -50,7 +50,7 @@ func GetCate(c *gin.Context) {
 func EditCate(c *gin.Context) {
 	var cate model.Category
 	_ = c.ShouldBind(&cate)
-	code := model.UpdateCateById(cate.Id, &cate)
+	code := model.UpdateCateById(cate.ID, &cate)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    cate,

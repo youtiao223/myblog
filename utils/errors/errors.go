@@ -19,6 +19,11 @@ const (
 	ErrorCateIdNotExits = 4101
 )
 
+// 文章模块错误
+const (
+	ErrorArtIdNotExits = 4200
+)
+
 var codeMsg = map[int]string{
 	SUCCESS:             "OK",
 	ERROR:               "FAIL",
@@ -27,6 +32,7 @@ var codeMsg = map[int]string{
 	ErrorNameOrPwd:      "用户名或密码错误",
 	ErrorCateExits:      "分类名已存在",
 	ErrorCateIdNotExits: "分类不存在",
+	ErrorArtIdNotExits:  "文章不存在",
 }
 
 func GetErrorMsg(code int) string {

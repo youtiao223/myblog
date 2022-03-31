@@ -28,7 +28,10 @@ func Init() {
 		logrus.Error("connect to mysql error")
 	}
 
-	db.AutoMigrate(&User{}, &Article{}, &Category{})
+	err := db.AutoMigrate(&User{}, &Article{}, &Category{})
+	if err != nil {
+		return
+	}
 
 	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
 	sqlDB, err := db.DB()

@@ -3,8 +3,8 @@ package model
 import "myBlog/utils/errors"
 
 type Category struct {
-	Id   uint   `gorm:"primaryKey;autoIncrement" json:"id"`
-	Name string `gorm:"type:varchar(20)" json:"name"`
+	ID       uint   `gorm:"primaryKey;autoIncrement" json:"id"`
+	CateName string `gorm:"type:varchar(20)" json:"name"`
 }
 
 // SelectCateByName 根据分类名查询用户
@@ -13,7 +13,7 @@ type Category struct {
 func SelectCateByName(name string) bool {
 	var cate Category
 	db.Select("id").Where("name=?", name).First(&cate)
-	if cate.Id > 0 {
+	if cate.ID > 0 {
 		return true
 	}
 	return false
@@ -29,7 +29,7 @@ func SelectCate(pageNum int, pageSize int) []Category {
 // InsertCate 插入Cate
 func InsertCate(cate *Category) int {
 	// 检查分类名是否存在
-	isExit := SelectCateByName(cate.Name)
+	isExit := SelectCateByName(cate.CateName)
 	if isExit {
 		return errors.ErrorCateExits
 	}
@@ -51,12 +51,12 @@ func DelCateById(id uint) int {
 
 // UpdateCateById 根据id更新Cart
 func UpdateCateById(id uint, data *Category) int {
-	isExit := SelectCateByName(data.Name)
+	isExit := SelectCateByName(data.CateName)
 	if isExit {
 		return errors.ErrorCateExits
 	}
 	var newUser = make(map[string]interface{})
-	newUser["name"] = data.Name
+	newUser["name"] = data.CateName
 	err := db.Model(&Category{}).Where("id=?", id).Updates(newUser).Error
 	if err != nil {
 		return errors.ERROR

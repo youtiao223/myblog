@@ -14,16 +14,24 @@ func Init() {
 
 	routerV1 := engine.Group("api/v1")
 	{
+		// todo 改成RESTFUL风格
 		// User 模块路由接口
 		routerV1.POST("user/add", v1.AddUser)
-		routerV1.GET("user/getUsers", v1.GetUsers)
+		routerV1.GET("users", v1.GetUsers)
 		routerV1.DELETE("user/del", v1.DelUser)
 		routerV1.PUT("user/edit", v1.EditUser)
 		// Cate 模块路由接口
 		routerV1.POST("cate/add", v1.AddCate)
-		routerV1.GET("cate/getCates", v1.GetCate)
+		routerV1.GET("cates", v1.GetCate)
 		routerV1.DELETE("cate/del", v1.DelCate)
 		routerV1.PUT("cate/edit", v1.EditCate)
+		// Article 模块路由接口
+		routerV1.POST("article/add", v1.AddArt)
+		routerV1.GET("articles", v1.GetArt)
+		routerV1.GET("article", v1.GetArtDetail)
+		routerV1.GET("articles/cate", v1.GetArtByCate)
+		routerV1.DELETE("article/del", v1.DelArt)
+		routerV1.PUT("article/edit", v1.EditArt)
 	}
 
 	err := engine.Run(":" + config.ServerConfig.HttpPort)

@@ -17,6 +17,8 @@ const (
 	ErrorTokenTime     = 4301
 	ErrorTokenFormat   = 4302
 	ErrorTokenValidate = 4303
+
+	ErrorUploadFile = 4400
 )
 
 var codeMsg = map[int]string{
@@ -36,6 +38,8 @@ var codeMsg = map[int]string{
 	ErrorTokenTime:     "Token 已过期",
 	ErrorTokenFormat:   "Token 格式错误",
 	ErrorTokenValidate: "Token 验证错误",
+
+	ErrorUploadFile: "文件上传错误",
 }
 
 func GetErrorMsg(code int) string {

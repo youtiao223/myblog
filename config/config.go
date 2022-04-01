@@ -20,10 +20,18 @@ type dbConfig struct {
 	Password string
 }
 
+type qiniuConfig struct {
+	AccessKey string
+	SecretKey string
+	Bucket    string
+	Url       string
+}
+
 // 全局配置变量
 var (
 	ServerConfig serverConfig
 	DbConfig     dbConfig
+	QiniuConfig  qiniuConfig
 )
 
 // Init 使用application.yml 初始化全局配置
@@ -50,11 +58,15 @@ func Init() {
 func setConfig(v *viper.Viper) {
 	err1 := v.Sub("server").Unmarshal(&ServerConfig)
 	if err1 != nil {
-		logrus.Error("setConfig error")
+		logrus.Error("setServerConfig error")
 	}
 	err2 := v.Sub("db").Unmarshal(&DbConfig)
 	if err2 != nil {
-		logrus.Error("setConfig error")
+		logrus.Error("setDbConfig error")
+	}
+	err3 := v.Sub("qiniu").Unmarshal(&QiniuConfig)
+	if err3 != nil {
+		logrus.Error("setQiniuConfig error")
 	}
 
 }

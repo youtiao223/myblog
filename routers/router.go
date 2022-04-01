@@ -42,6 +42,8 @@ func Init() {
 		authRouterV1.POST("article/add", v1.AddArt)
 		authRouterV1.DELETE("article/del", v1.DelArt)
 		authRouterV1.PUT("article/edit", v1.EditArt)
+		// Upload
+		authRouterV1.POST("upload", v1.Upload)
 	}
 
 	err := engine.Run(":" + config.ServerConfig.HttpPort)

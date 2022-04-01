@@ -9,8 +9,7 @@ import (
 func init() {
 	config.Init()
 	model.Init()
-	routers.Init()
 }
 func main() {
-
+	routers.Init()
 }

@@ -1,6 +1,8 @@
 package model
 
-import "myBlog/utils/errors"
+import (
+	"myBlog/utils/errors"
+)
 
 type Category struct {
 	ID       uint   `gorm:"primaryKey;autoIncrement" json:"id"`

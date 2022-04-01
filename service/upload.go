@@ -9,6 +9,14 @@ import (
 	"myBlog/utils/errors"
 )
 
+// todo 这样声明变量无法导入，不是很清楚原因
+//var (
+//	accessKey = config.QiniuConfig.AccessKey
+//	secretKey = config.QiniuConfig.SecretKey
+//	bucket = config.QiniuConfig.Bucket
+//	url = config.QiniuConfig.Url
+//)
+
 // UploadFile 文件上传
 func UploadFile(file multipart.File, fileSize int64) (string, int) {
 	accessKey := config.QiniuConfig.AccessKey

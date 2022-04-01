@@ -12,7 +12,7 @@ import (
 func Init() {
 	gin.SetMode(config.ServerConfig.Mode)
 	engine := gin.Default()
-
+	engine.Use(middleware.GinRequestLog())
 	routerV1 := engine.Group("api/v1")
 	{
 		// todo 改成RESTFUL风格

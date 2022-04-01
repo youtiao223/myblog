@@ -1,14 +1,10 @@
 package errors
 
-// 通用错误
 const (
 	SUCCESS = 200
 	ERROR   = 500
-)
 
-// 用户模块错误
-const (
-	ErrorUserExits      = 4000
+	ErrorUserNameExits  = 4000
 	ErrorNameOrPwd      = 4001
 	ErrorUserIdNotExits = 4002
 
@@ -17,16 +13,17 @@ const (
 
 	ErrorArtIdNotExits = 4200
 
-	ErrorTokenExits  = 4300
-	ErrorTokenTime   = 4301
-	ErrorTokenFormat = 4302
+	ErrorTokenExits    = 4300
+	ErrorTokenTime     = 4301
+	ErrorTokenFormat   = 4302
+	ErrorTokenValidate = 4303
 )
 
 var codeMsg = map[int]string{
 	SUCCESS: "OK",
 	ERROR:   "FAIL",
 
-	ErrorUserExits:      "用户名已存在",
+	ErrorUserNameExits:  "用户名已存在",
 	ErrorUserIdNotExits: "用户不存在",
 	ErrorNameOrPwd:      "用户名或密码错误",
 
@@ -35,9 +32,10 @@ var codeMsg = map[int]string{
 
 	ErrorArtIdNotExits: "文章不存在",
 
-	ErrorTokenExits:  "Token 不存在",
-	ErrorTokenTime:   "Token 已过期",
-	ErrorTokenFormat: "Token 格式错误",
+	ErrorTokenExits:    "Token 不存在",
+	ErrorTokenTime:     "Token 已过期",
+	ErrorTokenFormat:   "Token 格式错误",
+	ErrorTokenValidate: "Token 验证错误",
 }
 
 func GetErrorMsg(code int) string {

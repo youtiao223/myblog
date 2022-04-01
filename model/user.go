@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"io"
+	"myBlog/middleware"
 	"myBlog/utils/errors"
 )
 
 type User struct {
 	gorm.Model
 	Username string `gorm:"type:varchar(20);not null" json:"username"`
-	Password string `gorm:"type:varchar(20);not null" json:"password"`
+	Password string `gorm:"type:varchar(35);not null" json:"password"`
 	// 用户权限 0:普通用户 1:管理员用户
 	Role int `gorm:"type:int;not null;default:0" json:"role"`
 }
@@ -40,7 +41,7 @@ func InsertUser(user *User) int {
 	// 检查用户名是否存在
 	isExit := SelectUserByName(user.Username)
 	if isExit {
-		return errors.ErrorUserExits
+		return errors.ErrorUserNameExits
 	}
 	user.Password = Encrypt(user.Password)
 	err := db.Create(&user).Error
@@ -48,6 +49,18 @@ func InsertUser(user *User) int {
 		return errors.ERROR
 	}
 	return errors.SUCCESS
+}
+
+// SelectUserById 通过id查找用户
+// true : 用户存在
+// false : 用户不存在
+func SelectUserById(id uint) bool {
+	var user User
+	db.Select("id").Where("id = ?", id).First(&user)
+	if user.ID > 0 {
+		return true
+	}
+	return false
 }
 
 // DelUserById DelUser 删除用户
@@ -63,9 +76,13 @@ func DelUserById(id uint) int {
 // 修改用户名要检查用户名是否重名
 // 密码修改独立，不在这里修改
 func UpdateUserById(id uint, data *User) int {
-	isExit := SelectUserByName(data.Username)
+	isExit := SelectUserById(id)
+	if !isExit {
+		return errors.ErrorUserIdNotExits
+	}
+	isExit = SelectUserByName(data.Username)
 	if isExit {
-		return errors.ErrorUserExits
+		return errors.ErrorUserNameExits
 	}
 	var newUser = make(map[string]interface{})
 	newUser["username"] = data.Username
@@ -77,9 +94,23 @@ func UpdateUserById(id uint, data *User) int {
 	return errors.SUCCESS
 }
 
-// GetUserByNamePwd 根据用户名和密码查询用户
-func GetUserByNamePwd() {
+// CheckLogin 登录验证
+func CheckLogin(loginUser *User) (string, int) {
+	var user User
+	username := loginUser.Username
+	password := loginUser.Password
+	pwdEncrypted := Encrypt(password)
+	db.Select("id").Where("username = ? and password = ?", username, pwdEncrypted).First(&user)
 
+	if user.ID == 0 {
+		return "", errors.ErrorNameOrPwd
+	}
+	// 登录成功后生成token
+	token, code := middleware.GenToken(username)
+	if code == errors.ERROR {
+		return "", errors.ERROR
+	}
+	return token, errors.SUCCESS
 }
 
 // Encrypt md5加盐加密

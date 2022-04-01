@@ -1,9 +1,12 @@
 package middleware
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"myBlog/config"
 	"myBlog/utils/errors"
+	"net/http"
+	"strings"
 	"time"
 )
 
@@ -15,7 +18,7 @@ type MyCustomClaims struct {
 }
 
 // GenToken 生成token
-func GenToken(username string, password string) (string, int) {
+func GenToken(username string) (string, int) {
 	// token 过期时间
 	expireTime := time.Now().Add(10 * time.Hour)
 
@@ -39,25 +42,65 @@ func GenToken(username string, password string) (string, int) {
 }
 
 // ValidateToken 验证token
-func ValidateToken(tokenString string) (*MyCustomClaims, int) {
+func ValidateToken(tokenString string) (*MyCustomClaims, bool) {
 	token, _ := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil
 	})
 
 	if claims, ok := token.Claims.(*MyCustomClaims); ok && token.Valid {
-		return claims, errors.SUCCESS
+		return claims, true
 	} else {
-		return nil, errors.ERROR
+		return nil, false
 	}
 }
 
-// todo JwtToken jwt中间件
-//func JwtToken() gin.HandlerFunc {
-//	return func(c *gin.Context) {
-//		tokenHeader := c.Request.Header.Get("Authorization")
-//		code := errors.SUCCESS
-//		if tokenHeader == "" {
-//			code = errors.
-//		}
-//	}
-//}
+// JwtToken jwt中间件
+func JwtToken() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 获取http请求头中的认证信息
+		tokenHeader := c.Request.Header.Get("Authorization")
+		code := errors.SUCCESS
+
+		// 请求头中没有认证信息
+		if tokenHeader == "" {
+			code = errors.ErrorTokenExits
+			c.JSON(http.StatusOK, gin.H{
+				"code":    code,
+				"message": errors.GetErrorMsg(code),
+			})
+			c.Abort()
+			return
+		}
+
+		checkedToken := strings.SplitN(tokenHeader, " ", 2)
+
+		// 检查Authorization头格式
+		// Authorization: <type> <credentials>
+		// 格式错误
+		if len(checkedToken) != 2 || checkedToken[0] != "Bearer" {
+			code = errors.ErrorTokenFormat
+			c.JSON(http.StatusOK, gin.H{
+				"code":    code,
+				"message": errors.GetErrorMsg(code),
+			})
+			c.Abort()
+			return
+		}
+
+		// 验证Token签名
+		key, ok := ValidateToken(checkedToken[1])
+		// Token 验证错误
+		if ok == false {
+			code = errors.ErrorTokenValidate
+			c.JSON(http.StatusOK, gin.H{
+				"code":    code,
+				"message": errors.GetErrorMsg(code),
+			})
+			c.Abort()
+			return
+		}
+
+		c.Set("username", key.Username)
+		c.Next()
+	}
+}

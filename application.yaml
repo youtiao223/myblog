@@ -10,6 +10,7 @@ db:
   name: myblog
   user: root
   password:
+# 七牛云配置
 qiniu:
   accessKey: DJnlV6bI1eK1GASiHKfYzr9FRWlVjAg2smwFt8-d
   secretKey: od9SvbBsOqqRiN85UorLNP91CT5zQVTHo0rjlMYw

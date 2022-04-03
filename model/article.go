@@ -6,7 +6,7 @@ import (
 )
 
 type Article struct {
-	Category Category `gorm:"foreignKey:Cid"`
+	Category Category `gorm:"foreignKey:ID;references:Cid"`
 	gorm.Model
 	Title   string `gorm:"type:varchar(20);not null" json:"title"`
 	Cid     uint   `gorm:"type:int;not null" json:"cid"`

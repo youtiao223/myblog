@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"myBlog/model"
+	"myBlog/utils"
 	"myBlog/utils/errors"
 	"net/http"
 	"strconv"
@@ -13,7 +14,15 @@ func AddUser(c *gin.Context) {
 	var user model.User
 	// 将请求体绑定到结构体中
 	_ = c.ShouldBindJSON(&user)
-
+	// 表单验证  todo 抽离出来
+	validateStr, validateCode := utils.ValidateStruct(&user)
+	if validateCode == errors.ERROR {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  validateCode,
+			"message": validateStr,
+		})
+		return
+	}
 	// model层返回错误码
 	code := model.InsertUser(&user)
 	c.JSON(http.StatusOK, gin.H{

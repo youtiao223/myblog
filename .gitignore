@@ -1,6 +1,13 @@
+# Idea
 .idea/
+
+# test.go
 test/
+
+# Log
 logs/
+*.log
+
 # Binaries for programs and plugins
 *.exe
 *.exe~

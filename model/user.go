@@ -11,10 +11,10 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"type:varchar(20);not null" json:"username"`
-	Password string `gorm:"type:varchar(35);not null" json:"password"`
-	// 用户权限 0:普通用户 1:管理员用户
-	Role int `gorm:"type:int;not null;default:0" json:"role"`
+	Username string `gorm:"type:varchar(20);not null" validate:"required,min=4,max=20" json:"username" label:"用户名"`
+	Password string `gorm:"type:varchar(35);not null" validate:"required,min=6,max=20" json:"password" label:"密码"`
+	// 用户权限 2:普通用户 1:管理员用户
+	Role int `gorm:"type:int;not null;default:2"  json:"role" label:"角色码"`
 }
 
 // SelectUserByName 根据用户名查询用户
@@ -104,6 +104,9 @@ func CheckLogin(loginUser *User) (string, int) {
 
 	if user.ID == 0 {
 		return "", errors.ErrorNameOrPwd
+	}
+	if user.Role != 1 {
+		return "", errors.ErrorNoRight
 	}
 	// 登录成功后生成token
 	token, code := middleware.GenToken(username)

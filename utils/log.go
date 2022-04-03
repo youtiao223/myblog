@@ -28,6 +28,8 @@ func WriteLogToPath(logger *logrus.Logger, p string) {
 		// 切割日志周期
 		rotatelogs.WithRotationTime(24*time.Hour),
 	)
+
+	// todo 这边的错误没有处理
 	if err != nil {
 		logrus.WithError(err).Error("error when writeLogToPath")
 		return

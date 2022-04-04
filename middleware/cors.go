@@ -8,25 +8,24 @@ import (
 
 // Cors 跨域配置
 func Cors() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		cors.New(cors.Config{
+	return cors.New(cors.Config{
 
-			AllowOrigins: []string{"*"},
+		AllowOrigins: []string{"*"},
 
-			AllowMethods: []string{"*"},
+		AllowMethods: []string{"*"},
 
-			AllowHeaders: []string{"Origin"},
+		AllowHeaders: []string{"Origin"},
 
-			ExposeHeaders: []string{"Content-Length", "Authorization"},
+		ExposeHeaders: []string{"Content-Length", "Authorization"},
 
-			// 可选字段是否允许发送cookie,这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段。
-			// AllowCredentials: true,
+		// 可选字段是否允许发送cookie,这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段。
+		// AllowCredentials: true,
 
-			//AllowOriginFunc: func(origin string) bool {
-			//	return origin == "https://github.com"
-			//},
+		//AllowOriginFunc: func(origin string) bool {
+		//	return origin == "https://github.com"
+		//},
 
-			MaxAge: 12 * time.Hour,
-		})
-	}
+		MaxAge: 12 * time.Hour,
+	})
+
 }

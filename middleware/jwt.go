@@ -65,7 +65,7 @@ func JwtToken() gin.HandlerFunc {
 		if tokenHeader == "" {
 			code = errors.ErrorTokenExits
 			c.JSON(http.StatusOK, gin.H{
-				"code":    code,
+				"status":  code,
 				"message": errors.GetErrorMsg(code),
 			})
 			c.Abort()
@@ -80,7 +80,7 @@ func JwtToken() gin.HandlerFunc {
 		if len(checkedToken) != 2 || checkedToken[0] != "Bearer" {
 			code = errors.ErrorTokenFormat
 			c.JSON(http.StatusOK, gin.H{
-				"code":    code,
+				"status":  code,
 				"message": errors.GetErrorMsg(code),
 			})
 			c.Abort()
@@ -93,7 +93,7 @@ func JwtToken() gin.HandlerFunc {
 		if ok == false {
 			code = errors.ErrorTokenValidate
 			c.JSON(http.StatusOK, gin.H{
-				"code":    code,
+				"status":  code,
 				"message": errors.GetErrorMsg(code),
 			})
 			c.Abort()

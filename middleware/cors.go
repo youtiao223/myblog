@@ -8,15 +8,16 @@ import (
 
 // Cors 跨域配置
 func Cors() gin.HandlerFunc {
+
 	return cors.New(cors.Config{
 
 		AllowOrigins: []string{"*"},
 
-		AllowMethods: []string{"*"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 
-		AllowHeaders: []string{"Origin"},
+		AllowHeaders: []string{"*"},
 
-		ExposeHeaders: []string{"Content-Length", "Authorization"},
+		ExposeHeaders: []string{"Content-Length", "Authorization", "Content-Type"},
 
 		// 可选字段是否允许发送cookie,这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段。
 		// AllowCredentials: true,

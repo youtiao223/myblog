@@ -24,9 +24,8 @@ func AddCate(c *gin.Context) {
 
 // DelCate 删除分类
 func DelCate(c *gin.Context) {
-	var cate model.Category
-	_ = c.ShouldBind(&cate)
-	code := model.DelCateById(cate.ID)
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := model.DelCateById(uint(id))
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errors.GetErrorMsg(code),
@@ -37,11 +36,12 @@ func DelCate(c *gin.Context) {
 func GetCate(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
-	cates := model.SelectCate(pageNum, pageSize)
+	cates, count := model.SelectCate(pageNum, pageSize)
 	code := errors.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    cates,
+		"total":   count,
 		"message": errors.GetErrorMsg(code),
 	})
 }
@@ -50,7 +50,8 @@ func GetCate(c *gin.Context) {
 func EditCate(c *gin.Context) {
 	var cate model.Category
 	_ = c.ShouldBind(&cate)
-	code := model.UpdateCateById(cate.ID, &cate)
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := model.UpdateCateById(uint(id), &cate)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    cate,

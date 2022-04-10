@@ -16,10 +16,11 @@ type Article struct {
 }
 
 // SelectArt 分页查询文章
-func SelectArt(pageNum int, pageSize int) []Article {
+func SelectArt(pageNum int, pageSize int) ([]Article, int64) {
 	var articles []Article
-	db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articles)
-	return articles
+	var count int64
+	db.Preload("Category").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&articles).Count(&count)
+	return articles, count
 }
 
 // InsertArt 插入文章

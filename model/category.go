@@ -22,10 +22,11 @@ func SelectCateByName(name string) bool {
 }
 
 // SelectCate 分页查询Cate
-func SelectCate(pageNum int, pageSize int) []Category {
+func SelectCate(pageNum int, pageSize int) ([]Category, int64) {
 	var cates []Category
-	db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cates)
-	return cates
+	var count int64
+	db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cates).Count(&count)
+	return cates, count
 }
 
 // InsertCate 插入Cate

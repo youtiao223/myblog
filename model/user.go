@@ -30,10 +30,11 @@ func SelectUserByName(username string) bool {
 }
 
 // SelectUsers 分页查询用户信息
-func SelectUsers(pageNum int, pageSize int) []User {
+func SelectUsers(pageNum int, pageSize int) ([]User, int64) {
 	var users []User
-	db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&users)
-	return users
+	var count int64
+	db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&users).Count(&count)
+	return users, count
 }
 
 // InsertUser 插入用户
@@ -100,7 +101,7 @@ func CheckLogin(loginUser *User) (string, int) {
 	username := loginUser.Username
 	password := loginUser.Password
 	pwdEncrypted := Encrypt(password)
-	db.Select("id").Where("username = ? and password = ?", username, pwdEncrypted).First(&user)
+	db.Select("id", "role").Where("username = ? and password = ?", username, pwdEncrypted).First(&user)
 
 	if user.ID == 0 {
 		return "", errors.ErrorNameOrPwd

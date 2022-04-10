@@ -33,9 +33,8 @@ func AddUser(c *gin.Context) {
 
 // DelUser 删除用户
 func DelUser(c *gin.Context) {
-	var user model.User
-	_ = c.ShouldBind(&user)
-	code := model.DelUserById(user.ID)
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := model.DelUserById(uint(id))
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errors.GetErrorMsg(code),
@@ -46,11 +45,12 @@ func DelUser(c *gin.Context) {
 func GetUsers(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
-	users := model.SelectUsers(pageNum, pageSize)
+	users, count := model.SelectUsers(pageNum, pageSize)
 	code := errors.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    users,
+		"total":   count,
 		"message": errors.GetErrorMsg(code),
 	})
 }
@@ -59,7 +59,8 @@ func GetUsers(c *gin.Context) {
 func EditUser(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
-	code := model.UpdateUserById(user.ID, &user)
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := model.UpdateUserById(uint(id), &user)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    user,

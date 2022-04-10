@@ -14,7 +14,7 @@ func Login(c *gin.Context) {
 
 	token, code := model.CheckLogin(&user)
 	c.JSON(http.StatusOK, gin.H{
-		"code":    code,
+		"status":  code,
 		"token":   token,
 		"message": errors.GetErrorMsg(code),
 	})

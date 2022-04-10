@@ -24,9 +24,8 @@ func AddArt(c *gin.Context) {
 
 // DelArt 删除文章
 func DelArt(c *gin.Context) {
-	var article model.Article
-	_ = c.ShouldBind(&article)
-	code := model.DelArtById(article.ID)
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := model.DelArtById(uint(id))
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"message": errors.GetErrorMsg(code),
@@ -37,11 +36,12 @@ func DelArt(c *gin.Context) {
 func GetArt(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
-	articles := model.SelectArt(pageNum, pageSize)
+	articles, count := model.SelectArt(pageNum, pageSize)
 	code := errors.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    articles,
+		"total":   count,
 		"message": errors.GetErrorMsg(code),
 	})
 }
@@ -50,7 +50,8 @@ func GetArt(c *gin.Context) {
 func EditArt(c *gin.Context) {
 	var article model.Article
 	_ = c.ShouldBind(&article)
-	code := model.UpdateArtById(article.ID, &article)
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := model.UpdateArtById(uint(id), &article)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    article,

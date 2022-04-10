@@ -13,13 +13,13 @@ func Init() {
 	gin.SetMode(config.ServerConfig.Mode)
 	engine := gin.Default()
 	engine.Use(middleware.GinRequestLog())
+	engine.Use(middleware.Cors())
 	routerV1 := engine.Group("api/v1")
 	{
-		// todo 改成RESTFUL风格
 		// User 模块路由接口
 		routerV1.GET("users", v1.GetUsers)
 		routerV1.POST("/login", v1.Login)
-		routerV1.POST("user/add", v1.AddUser)
+		routerV1.POST("user", v1.AddUser)
 		// Cate 模块路由接口
 		routerV1.GET("cates", v1.GetCate)
 		// Article 模块路由接口
@@ -32,16 +32,16 @@ func Init() {
 	authRouterV1.Use(middleware.JwtToken())
 	{
 		// User 模块路由接口
-		authRouterV1.DELETE("user/del", v1.DelUser)
-		authRouterV1.PUT("user/edit", v1.EditUser)
+		authRouterV1.DELETE("user/:id", v1.DelUser)
+		authRouterV1.PUT("user/:id", v1.EditUser)
 		// Cate 模块路由接口
-		authRouterV1.POST("cate/add", v1.AddCate)
-		authRouterV1.DELETE("cate/del", v1.DelCate)
-		authRouterV1.PUT("cate/edit", v1.EditCate)
+		authRouterV1.POST("cate", v1.AddCate)
+		authRouterV1.DELETE("cate/:id", v1.DelCate)
+		authRouterV1.PUT("cate/:id", v1.EditCate)
 		// Article 模块路由接口
-		authRouterV1.POST("article/add", v1.AddArt)
-		authRouterV1.DELETE("article/del", v1.DelArt)
-		authRouterV1.PUT("article/edit", v1.EditArt)
+		authRouterV1.POST("article", v1.AddArt)
+		authRouterV1.DELETE("article/:id", v1.DelArt)
+		authRouterV1.PUT("article/:id", v1.EditArt)
 		// Upload
 		authRouterV1.POST("upload", v1.Upload)
 	}

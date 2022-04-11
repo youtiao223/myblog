@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"myBlog/model"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 	"net/http"
 )
 
@@ -16,7 +16,7 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"token":   token,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 
 }

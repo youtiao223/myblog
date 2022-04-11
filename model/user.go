@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 	"io"
 	"myBlog/middleware"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 )
 
 type User struct {
@@ -17,10 +17,10 @@ type User struct {
 	Role int `gorm:"type:int;not null;default:2"  json:"role" label:"角色码"`
 }
 
-// SelectUserByName 根据用户名查询用户
+// FindUserByName 根据用户名查询用户
 // true : 用户存在
 // false : 用户不存在
-func SelectUserByName(username string) bool {
+func FindUserByName(username string) bool {
 	var user User
 	db.Select("id").Where("username = ?", username).First(&user)
 	if user.ID > 0 {
@@ -40,16 +40,16 @@ func SelectUsers(pageNum int, pageSize int) ([]User, int64) {
 // InsertUser 插入用户
 func InsertUser(user *User) int {
 	// 检查用户名是否存在
-	isExit := SelectUserByName(user.Username)
+	isExit := FindUserByName(user.Username)
 	if isExit {
-		return errors.ErrorUserNameExits
+		return errorUtils.ErrorUserNameExits
 	}
 	user.Password = Encrypt(user.Password)
 	err := db.Create(&user).Error
 	if err != nil {
-		return errors.ERROR
+		return errorUtils.ERROR
 	}
-	return errors.SUCCESS
+	return errorUtils.SUCCESS
 }
 
 // SelectUserById 通过id查找用户
@@ -68,9 +68,9 @@ func SelectUserById(id uint) bool {
 func DelUserById(id uint) int {
 	rowsAffected := db.Delete(&User{}, id).RowsAffected
 	if rowsAffected == 0 {
-		return errors.ErrorUserIdNotExits
+		return errorUtils.ErrorUserIdNotExits
 	}
-	return errors.SUCCESS
+	return errorUtils.SUCCESS
 }
 
 // UpdateUserById UpdateUser 更新用户信息
@@ -79,20 +79,20 @@ func DelUserById(id uint) int {
 func UpdateUserById(id uint, data *User) int {
 	isExit := SelectUserById(id)
 	if !isExit {
-		return errors.ErrorUserIdNotExits
+		return errorUtils.ErrorUserIdNotExits
 	}
-	isExit = SelectUserByName(data.Username)
+	isExit = FindUserByName(data.Username)
 	if isExit {
-		return errors.ErrorUserNameExits
+		return errorUtils.ErrorUserNameExits
 	}
 	var newUser = make(map[string]interface{})
 	newUser["username"] = data.Username
 	newUser["role"] = data.Role
 	err := db.Model(&User{}).Where("id=?", id).Updates(newUser).Error
 	if err != nil {
-		return errors.ERROR
+		return errorUtils.ERROR
 	}
-	return errors.SUCCESS
+	return errorUtils.SUCCESS
 }
 
 // CheckLogin 登录验证
@@ -104,17 +104,17 @@ func CheckLogin(loginUser *User) (string, int) {
 	db.Select("id", "role").Where("username = ? and password = ?", username, pwdEncrypted).First(&user)
 
 	if user.ID == 0 {
-		return "", errors.ErrorNameOrPwd
+		return "", errorUtils.ErrorNameOrPwd
 	}
 	if user.Role != 1 {
-		return "", errors.ErrorNoRight
+		return "", errorUtils.ErrorNoRight
 	}
 	// 登录成功后生成token
 	token, code := middleware.GenToken(username)
-	if code == errors.ERROR {
-		return "", errors.ERROR
+	if code == errorUtils.ERROR {
+		return "", errorUtils.ERROR
 	}
-	return token, errors.SUCCESS
+	return token, errorUtils.SUCCESS
 }
 
 // Encrypt md5加盐加密

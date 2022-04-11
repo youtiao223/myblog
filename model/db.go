@@ -5,6 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"myBlog/config"
 	"time"
 )
@@ -23,12 +24,15 @@ func Init() {
 		config.DbConfig.Port,
 		config.DbConfig.Name,
 	)
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		logrus.Error("connect to mysql error")
 	}
 
-	err := db.AutoMigrate(&User{}, &Article{}, &Category{})
+	err := db.AutoMigrate(&User{}, &Article{}, &Category{}, &Profile{})
 	if err != nil {
 		return
 	}
@@ -46,5 +50,5 @@ func Init() {
 
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second)
-
+	logrus.Info("init database success")
 }

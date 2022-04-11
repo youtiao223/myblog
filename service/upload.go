@@ -6,7 +6,7 @@ import (
 	"github.com/qiniu/go-sdk/v7/storage"
 	"mime/multipart"
 	"myBlog/config"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 )
 
 // todo 这样声明变量无法导入，不是很清楚原因
@@ -49,8 +49,8 @@ func UploadFile(file multipart.File, fileSize int64) (string, int) {
 
 	err := formUploader.PutWithoutKey(context.Background(), &ret, upToken, file, fileSize, &putExtra)
 	if err != nil {
-		return "", errors.ErrorUploadFile
+		return "", errorUtils.ErrorUploadFile
 	}
 
-	return url + ret.Key, errors.SUCCESS
+	return url + ret.Key, errorUtils.SUCCESS
 }

@@ -3,7 +3,6 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"myBlog/service"
-	"myBlog/utils/errors"
 	"net/http"
 )
 
@@ -16,7 +15,7 @@ func Upload(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"state":   code,
 		"fileUrl": fileUrl,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 
 }

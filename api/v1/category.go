@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"myBlog/model"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 	"net/http"
 	"strconv"
 )
@@ -18,7 +18,7 @@ func AddCate(c *gin.Context) {
 	code := model.InsertCate(&cate)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -28,7 +28,7 @@ func DelCate(c *gin.Context) {
 	code := model.DelCateById(uint(id))
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -37,12 +37,12 @@ func GetCate(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
 	cates, count := model.SelectCate(pageNum, pageSize)
-	code := errors.SUCCESS
+	code := errorUtils.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    cates,
 		"total":   count,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -55,7 +55,7 @@ func GetCateDetail(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    category,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -68,6 +68,6 @@ func EditCate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    cate,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }

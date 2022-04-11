@@ -43,8 +43,12 @@ func Init() {
 	authRouterV1.Use(middleware.JwtToken())
 	{
 		// User 模块路由接口
+		// todo 获取当前用户登录信息
+		// authRouterV1.GET("user", v1.GetLoginUserInfo)
 		authRouterV1.DELETE("user/:id", v1.DelUser)
 		authRouterV1.PUT("user/:id", v1.EditUser)
+		authRouterV1.PUT("user/profile/:id", v1.EditProfile)
+		authRouterV1.GET("user/profile/:id", v1.GetProfile)
 		// Cate 模块路由接口
 		authRouterV1.POST("category", v1.AddCate)
 		authRouterV1.DELETE("category/:id", v1.DelCate)

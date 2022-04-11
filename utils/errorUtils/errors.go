@@ -1,4 +1,4 @@
-package errors
+package errorUtils
 
 const (
 	SUCCESS = 200
@@ -8,6 +8,7 @@ const (
 	ErrorNameOrPwd      = 4001
 	ErrorUserIdNotExits = 4002
 	ErrorNoRight        = 4003
+	ErrorAdminNotExist  = 4004
 
 	ErrorCateExits      = 4100
 	ErrorCateIdNotExits = 4101
@@ -30,6 +31,7 @@ var codeMsg = map[int]string{
 	ErrorUserIdNotExits: "用户不存在",
 	ErrorNameOrPwd:      "用户名或密码错误",
 	ErrorNoRight:        "无权限",
+	ErrorAdminNotExist:  "管理员不存在",
 
 	ErrorCateExits:      "分类名已存在",
 	ErrorCateIdNotExits: "分类不存在",

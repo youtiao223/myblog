@@ -3,7 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"myBlog/model"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 	"net/http"
 	"strconv"
 )
@@ -18,7 +18,7 @@ func AddArt(c *gin.Context) {
 	code := model.InsertArt(&article)
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -28,7 +28,7 @@ func DelArt(c *gin.Context) {
 	code := model.DelArtById(uint(id))
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -37,12 +37,12 @@ func GetArt(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
 	articles, count := model.SelectArt(pageNum, pageSize)
-	code := errors.SUCCESS
+	code := errorUtils.SUCCESS
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    articles,
 		"total":   count,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -55,7 +55,7 @@ func EditArt(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    article,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -68,7 +68,7 @@ func GetArtDetail(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    article,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }
 
@@ -82,6 +82,6 @@ func GetArtByCate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status":  code,
 		"data":    articles,
-		"message": errors.GetErrorMsg(code),
+		"message": errorUtils.GetErrorMsg(code),
 	})
 }

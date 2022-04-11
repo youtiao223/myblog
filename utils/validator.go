@@ -5,7 +5,7 @@ import (
 	uniTrans "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	zhTrans "github.com/go-playground/validator/v10/translations/zh"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 	"reflect"
 )
 
@@ -27,8 +27,8 @@ func ValidateStruct(data interface{}) (string, int) {
 	err := validate.Struct(data)
 	if err != nil {
 		for _, v := range err.(validator.ValidationErrors) {
-			return v.Translate(trans), errors.ERROR
+			return v.Translate(trans), errorUtils.ERROR
 		}
 	}
-	return "", errors.SUCCESS
+	return "", errorUtils.SUCCESS
 }

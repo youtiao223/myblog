@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"myBlog/config"
-	"myBlog/utils/errors"
+	"myBlog/utils/errorUtils"
 	"net/http"
 	"strings"
 	"time"
@@ -35,10 +35,10 @@ func GenToken(username string) (string, int) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, err := token.SignedString(jwtKey)
 	if err != nil {
-		return "", errors.ERROR
+		return "", errorUtils.ERROR
 	}
 
-	return ss, errors.SUCCESS
+	return ss, errorUtils.SUCCESS
 }
 
 // ValidateToken 验证token
@@ -59,14 +59,14 @@ func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 获取http请求头中的认证信息
 		tokenHeader := c.Request.Header.Get("Authorization")
-		code := errors.SUCCESS
+		code := errorUtils.SUCCESS
 
 		// 请求头中没有认证信息
 		if tokenHeader == "" {
-			code = errors.ErrorTokenExits
+			code = errorUtils.ErrorTokenExits
 			c.JSON(http.StatusOK, gin.H{
 				"status":  code,
-				"message": errors.GetErrorMsg(code),
+				"message": errorUtils.GetErrorMsg(code),
 			})
 			c.Abort()
 			return
@@ -78,10 +78,10 @@ func JwtToken() gin.HandlerFunc {
 		// Authorization: <type> <credentials>
 		// 格式错误
 		if len(checkedToken) != 2 || checkedToken[0] != "Bearer" {
-			code = errors.ErrorTokenFormat
+			code = errorUtils.ErrorTokenFormat
 			c.JSON(http.StatusOK, gin.H{
 				"status":  code,
-				"message": errors.GetErrorMsg(code),
+				"message": errorUtils.GetErrorMsg(code),
 			})
 			c.Abort()
 			return
@@ -91,10 +91,10 @@ func JwtToken() gin.HandlerFunc {
 		key, ok := ValidateToken(checkedToken[1])
 		// Token 验证错误
 		if ok == false {
-			code = errors.ErrorTokenValidate
+			code = errorUtils.ErrorTokenValidate
 			c.JSON(http.StatusOK, gin.H{
 				"status":  code,
-				"message": errors.GetErrorMsg(code),
+				"message": errorUtils.GetErrorMsg(code),
 			})
 			c.Abort()
 			return

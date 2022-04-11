@@ -21,12 +21,21 @@ func SelectCateByName(name string) bool {
 	return false
 }
 
-// SelectCate 分页查询Cate
+// SelectCate 分页查询分类
 func SelectCate(pageNum int, pageSize int) ([]Category, int64) {
 	var cates []Category
 	var count int64
 	db.Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&cates).Count(&count)
 	return cates, count
+}
+
+// SelectCateById 根据Id查找分类
+func SelectCateById(id uint, category *Category) int {
+	err := db.Where("id = ?", id).First(&category).Error
+	if err != nil {
+		return errors.ErrorArtIdNotExits
+	}
+	return errors.SUCCESS
 }
 
 // InsertCate 插入Cate

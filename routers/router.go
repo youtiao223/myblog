@@ -21,11 +21,12 @@ func Init() {
 		routerV1.POST("/login", v1.Login)
 		routerV1.POST("user", v1.AddUser)
 		// Cate 模块路由接口
-		routerV1.GET("cates", v1.GetCate)
+		routerV1.GET("categories", v1.GetCate)
+		routerV1.GET("category/:id", v1.GetCateDetail)
+		routerV1.GET("category/:id/articleList", v1.GetArtByCate)
 		// Article 模块路由接口
 		routerV1.GET("articles", v1.GetArt)
-		routerV1.GET("article", v1.GetArtDetail)
-		routerV1.GET("articles/cate", v1.GetArtByCate)
+		routerV1.GET("article/:id", v1.GetArtDetail)
 	}
 	// 认证路由
 	authRouterV1 := engine.Group("api/v1")
@@ -35,9 +36,9 @@ func Init() {
 		authRouterV1.DELETE("user/:id", v1.DelUser)
 		authRouterV1.PUT("user/:id", v1.EditUser)
 		// Cate 模块路由接口
-		authRouterV1.POST("cate", v1.AddCate)
-		authRouterV1.DELETE("cate/:id", v1.DelCate)
-		authRouterV1.PUT("cate/:id", v1.EditCate)
+		authRouterV1.POST("category", v1.AddCate)
+		authRouterV1.DELETE("category/:id", v1.DelCate)
+		authRouterV1.PUT("category/:id", v1.EditCate)
 		// Article 模块路由接口
 		authRouterV1.POST("article", v1.AddArt)
 		authRouterV1.DELETE("article/:id", v1.DelArt)

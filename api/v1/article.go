@@ -62,7 +62,7 @@ func EditArt(c *gin.Context) {
 // GetArtDetail 查询单个文章内容
 func GetArtDetail(c *gin.Context) {
 	var article model.Article
-	articleId, _ := strconv.Atoi(c.Query("id"))
+	articleId, _ := strconv.Atoi(c.Param("id"))
 	_ = c.ShouldBind(&article)
 	code := model.SelectArtById(uint(articleId), &article)
 	c.JSON(http.StatusOK, gin.H{
@@ -74,7 +74,7 @@ func GetArtDetail(c *gin.Context) {
 
 // GetArtByCate 查询某个分类下的所有文章
 func GetArtByCate(c *gin.Context) {
-	cid, _ := strconv.Atoi(c.Query("cid"))
+	cid, _ := strconv.Atoi(c.Param("id"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	pageNum, _ := strconv.Atoi(c.Query("pageNum"))
 	articles, code := model.SelectArtByCate(uint(cid), pageNum, pageSize)

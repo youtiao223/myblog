@@ -46,6 +46,19 @@ func GetCate(c *gin.Context) {
 	})
 }
 
+// GetCateDetail 查询单个文章内容
+func GetCateDetail(c *gin.Context) {
+	var category model.Category
+	CateId, _ := strconv.Atoi(c.Param("id"))
+	_ = c.ShouldBind(&category)
+	code := model.SelectCateById(uint(CateId), &category)
+	c.JSON(http.StatusOK, gin.H{
+		"status":  code,
+		"data":    category,
+		"message": errors.GetErrorMsg(code),
+	})
+}
+
 // EditCate 编辑分类
 func EditCate(c *gin.Context) {
 	var cate model.Category

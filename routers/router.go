@@ -30,6 +30,7 @@ func Init() {
 		routerV1.GET("users", v1.GetUsers)
 		routerV1.POST("/login", v1.Login)
 		routerV1.POST("user", v1.AddUser)
+		routerV1.GET("user/profile/:id", v1.GetProfile)
 		// Cate 模块路由接口
 		routerV1.GET("categories", v1.GetCate)
 		routerV1.GET("category/:id", v1.GetCateDetail)
@@ -48,7 +49,7 @@ func Init() {
 		authRouterV1.DELETE("user/:id", v1.DelUser)
 		authRouterV1.PUT("user/:id", v1.EditUser)
 		authRouterV1.PUT("user/profile/:id", v1.EditProfile)
-		authRouterV1.GET("user/profile/:id", v1.GetProfile)
+
 		// Cate 模块路由接口
 		authRouterV1.POST("category", v1.AddCate)
 		authRouterV1.DELETE("category/:id", v1.DelCate)

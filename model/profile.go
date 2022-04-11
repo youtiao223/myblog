@@ -16,8 +16,8 @@ type Profile struct {
 	WeChat           string `gorm:"type:varchar(15);"  json:"weChat"`
 	Github           string `gorm:"type:varchar(60);"  json:"github"`
 	Email            string `gorm:"type:varchar(30);"  json:"email"`
-	BackGroundImg    string `gorm:"type:varchar(60);"  json:"backGroundImg"`
-	Avatar           string `gorm:"type:varchar(60);"  json:"avatar"`
+	BackGroundImg    string `gorm:"type:varchar(100);"  json:"backGroundImg"`
+	Avatar           string `gorm:"type:varchar(100);"  json:"avatar"`
 }
 
 // InsertProfile 新建Profile

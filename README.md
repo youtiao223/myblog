@@ -1,4 +1,4 @@
-在https://gitee.com/itmxs/gin-vue-blog基础上修改
+在https://gitee.com/itmxs/gin-vue-blog 基础上修改
 
 ## 配置文件yaml解析
 - spf13/viper

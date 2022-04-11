@@ -65,9 +65,17 @@ func EditCate(c *gin.Context) {
 	_ = c.ShouldBind(&cate)
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := model.UpdateCateById(uint(id), &cate)
-	c.JSON(http.StatusOK, gin.H{
-		"status":  code,
-		"data":    cate,
-		"message": errorUtils.GetErrorMsg(code),
-	})
+	if code == errorUtils.SUCCESS {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code,
+			"data":    cate,
+			"message": errorUtils.GetErrorMsg(code),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  code,
+			"message": errorUtils.GetErrorMsg(code),
+		})
+	}
+
 }

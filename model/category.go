@@ -67,9 +67,9 @@ func UpdateCateById(id uint, data *Category) int {
 	if isExit {
 		return errorUtils.ErrorCateExits
 	}
-	var newUser = make(map[string]interface{})
-	newUser["name"] = data.CateName
-	err := db.Model(&Category{}).Where("id=?", id).Updates(newUser).Error
+	var category = make(map[string]interface{})
+	category["cate_name"] = data.CateName
+	err := db.Model(&Category{}).Where("id=?", id).Updates(category).Error
 	if err != nil {
 		return errorUtils.ERROR
 	}

@@ -6,6 +6,7 @@ import (
 	v1 "myBlog/api/v1"
 	"myBlog/config"
 	"myBlog/middleware"
+	"net/http"
 )
 
 // Init 初始化路由
@@ -14,6 +15,15 @@ func Init() {
 	engine := gin.Default()
 	engine.Use(middleware.GinRequestLog())
 	engine.Use(middleware.Cors())
+
+	// 静态资源托管
+	engine.LoadHTMLGlob("web/admin/dist/index.html")
+	engine.Static("admin/static", "web/admin/dist/static")
+
+	engine.GET("admin", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
+
 	routerV1 := engine.Group("api/v1")
 	{
 		// User 模块路由接口

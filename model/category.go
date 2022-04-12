@@ -14,7 +14,7 @@ type Category struct {
 // false : 用户不存在
 func SelectCateByName(name string) bool {
 	var cate Category
-	db.Select("id").Where("name=?", name).First(&cate)
+	db.Select("id").Where("cate_name=?", name).First(&cate)
 	if cate.ID > 0 {
 		return true
 	}

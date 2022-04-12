@@ -17,12 +17,12 @@ func Init() {
 	engine.Use(middleware.Cors())
 
 	// 静态资源托管
-	engine.LoadHTMLFiles("web/front/dist/index.html", "web/admin/dist/admin.html")
+	engine.LoadHTMLFiles("web/front/dist/front.html", "web/admin/dist/admin.html")
 	engine.Static("admin/static", "web/admin/dist/static")
 	engine.Static("static", "web/front/dist/static") // todo front 前端打包路由有问题
 	// 博客界面路由
 	engine.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
+		c.HTML(http.StatusOK, "front.html", nil)
 	})
 	// 后台管理界面路由
 	engine.GET("/admin", func(c *gin.Context) {

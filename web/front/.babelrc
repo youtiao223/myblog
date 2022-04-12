@@ -1,0 +1,37 @@
+{
+	"plugins": [
+		[
+			"prismjs",
+			{
+				"languages": [
+					"html",
+					"css",
+					"javascript",
+					"csharp",
+					"go",
+					"java",
+					"javadoc",
+					"python",
+					"php",
+					"bash",
+					"nginx",
+					"sql",
+					"powershell",
+					"cpp",
+					"markdown",
+					"typescript"
+				],
+				"theme": "okaidia",
+				// "theme": "tomorrow",
+				// "theme": "default",
+				"plugins": [
+					"line-numbers",
+					"toolbar",
+					"copy-to-clipboard",
+					"inline-color"
+				],
+				"css": true
+			}
+		]
+	]
+}

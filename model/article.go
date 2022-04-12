@@ -6,6 +6,7 @@ import (
 )
 
 type Article struct {
+	// `gorm:"foreignKey:关联表的结构体字段;references:当前表的结构体字段;`
 	Category Category `gorm:"foreignKey:ID;references:Cid"`
 	gorm.Model
 	Title   string `gorm:"type:varchar(20);not null" json:"title"`

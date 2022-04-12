@@ -29,19 +29,21 @@
       {{artInfo.desc}}
     </v-alert>
     <!-- 文章内容 -->
-    <div class="content ma-4 pa-3 text-justify" v-html="artInfo.content"></div>
+    <div class="content ma-4 pa-3 text-justify" v-html="this.content"></div>
   </v-card>
 
 </template>
 <script>
 import Prism from 'prismjs';
+import {marked} from 'marked';
+
 
 export default {
   props: ['id'],
   data () {
     return {
       artInfo: {},
-
+      content: "",
     }
   },
   created () {
@@ -51,6 +53,10 @@ export default {
     async getArtInfo () {
       const { data: res } = await this.$axios.get(`article/${this.id}`);
       this.artInfo = res.data;
+      
+      this.content = marked(res.data.content||'',{
+          sanitize:true
+      })
       window.sessionStorage.setItem('title', this.artInfo.title)
     }
   },

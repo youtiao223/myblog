@@ -45,6 +45,27 @@ qiniu:
 
 ```
 
+```shell
+├─api                  // 后端接口
+│  └─v1
+├─config
+├─logs                 // 日志文件目录,运行后会生成
+├─middleware           // 中间件,包括 jwt,logger,cors
+├─model                // 模型层
+├─routers              // 路由
+├─service              // 其他服务, 如文件上传
+├─utils                // utils 工具包
+│  └─errorUtils           // 自定义错误信息
+└─web
+│ .gitignore
+│ application.yaml     // 配置文件
+│ db.sql               // 数据库初始化文件
+│ initUser.sql         // 初始化管理员文件
+│ main.go              // 程序入口
+│ README.md
+
+```
+
 ## ToDoList （咕咕咕🕊️）
 
 - 💡 博客页面文章排序

@@ -44,7 +44,7 @@ qiniu:
   url: http://r9nc6zhlu.hn-bkt.clouddn.com/
 
 ```
-
+## 文件结构 
 ```shell
 ├─api                  // 后端接口
 │  └─v1
@@ -56,7 +56,7 @@ qiniu:
 ├─service              // 其他服务, 如文件上传
 ├─utils                // utils 工具包
 │  └─errorUtils           // 自定义错误信息
-└─web
+└─web                  // 前端项目目录
 │ .gitignore
 │ application.yaml     // 配置文件
 │ db.sql               // 数据库初始化文件

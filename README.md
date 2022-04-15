@@ -1,4 +1,4 @@
-在https://gitee.com/itmxs/gin-vue-blog 基础上修改
+在https://gitee.com/wejectchan/ginblog 基础上修改
 博客地址 http://www.aweiblog.xyz/
 ## 后端技术栈
 - 配置文件yaml解析

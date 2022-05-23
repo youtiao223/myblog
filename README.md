@@ -1,5 +1,7 @@
 在https://gitee.com/wejectchan/ginblog 基础上修改
-博客地址 http://www.aweiblog.xyz/
+
+~~博客地址 http://www.aweiblog.xyz/~~
+
 ## 后端技术栈
 - 配置文件yaml解析
   - spf13/viper
